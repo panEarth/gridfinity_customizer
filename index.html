@@ -6,7 +6,7 @@
 <!-- Printables ownership verification: re-checked daily, do not remove -->
 <meta name="printables:app" content="https://www.testprusaverse.com/app/418094">
 <title>Gridfinity Customizer</title>
-<meta name="description" content="Parametric Gridfinity bins and baseplates in your browser. Preview in 3D and download STL.">
+<meta name="description" content="Parametric Gridfinity bins and baseplates in your browser. Preview in 3D, download STL or 3MF, or print with EasyPrint.">
 <style>
   :root {
     --bg: #f6f5f2; --panel: #ffffff; --text: #1d1d1b; --muted: #6b6a66;
@@ -53,7 +53,34 @@
     padding: 11px; background: var(--accent); color: #fff; margin-top: 4px;
   }
   .primary:disabled { opacity: .5; cursor: default; }
-  .secondary { display: flex; gap: 8px; margin-top: 8px; }
+  .downloads { display: flex; gap: 8px; }
+  .downloads .primary { flex: 1; }
+  .downloads .alt {
+    width: auto; padding: 11px 16px; background: transparent; color: var(--accent);
+    box-shadow: inset 0 0 0 1.5px var(--accent);
+  }
+  .send-label { font-size: .8rem; color: var(--muted); margin: 14px 0 6px; }
+  /* Official EasyPrint / PrusaSlicer buttons (keep brand colours in both themes). */
+  .easyprint-button, .prusaslicer-button {
+    display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
+    padding: 10px 18px; background: #fff; color: #1a1a1a; border: 1px solid #dadce0; border-radius: 8px;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 500; line-height: 1;
+    cursor: pointer; transition: box-shadow .15s ease, border-color .15s ease;
+  }
+  .prusaslicer-button { margin-top: 8px; }
+  .easyprint-button:hover, .prusaslicer-button:hover { border-color: #c5c9d0; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+  .easyprint-button:active, .prusaslicer-button:active { background: #f7f7f9; }
+  .easyprint-button:focus-visible { outline: 2px solid #fd5000; outline-offset: 2px; }
+  .prusaslicer-button:focus-visible { outline: 2px solid #ed6b21; outline-offset: 2px; }
+  .easyprint-button:disabled, .prusaslicer-button:disabled { opacity: .6; cursor: progress; }
+  .easyprint-button__label { letter-spacing: .01em; }
+  .easyprint-button__logo { height: 22px; width: auto; display: block; }
+  .prusaslicer-button__icon { width: 22px; height: 22px; display: block; }
+  .prusaslicer-button__label strong { font-weight: 700; color: #ed6b21; }
+  .export-status { font-size: .8rem; margin: 8px 0 0; color: var(--muted); min-height: 0; }
+  .export-status.error { color: #d93025; }
+  .export-status a { color: inherit; }
+  .secondary { display: flex; gap: 8px; margin-top: 16px; }
   .secondary button {
     flex: 1; font: inherit; font-size: .85rem; cursor: pointer; border: 1px solid var(--border);
     background: var(--panel); color: var(--text); border-radius: 8px; padding: 7px;
@@ -86,7 +113,7 @@
 <body>
 <aside>
   <h1>Gridfinity Customizer</h1>
-  <p class="sub">Parametric bins and baseplates for the Gridfinity system. Preview in 3D, then download an STL.</p>
+  <p class="sub">Parametric bins and baseplates for the Gridfinity system. Preview in 3D, then download it or send it straight to EasyPrint or PrusaSlicer.</p>
 
   <div class="tabs" role="group" aria-label="Model type">
     <button type="button" data-type="bin" aria-pressed="true">Bin</button>
@@ -142,7 +169,64 @@
     </div>
   </form>
 
-  <button class="primary" id="download" disabled>Download STL</button>
+  <div class="downloads">
+    <button class="primary" id="download" disabled>Download STL</button>
+    <button class="primary alt" id="download3mf" disabled>3MF</button>
+  </div>
+
+  <p class="send-label">Or send it straight to the slicer:</p>
+  <button class="easyprint-button" id="easyprint-btn" type="button" disabled>
+    <span class="easyprint-button__label">Print with</span>
+    <svg
+    class="easyprint-button__logo"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 406.37 83.99"
+    aria-label="EasyPrint" role="img"
+    focusable="false"
+  >
+    <g fill="#fd5000">
+      <polygon points="72.66 16.8 43.59 .01 14.52 16.8 14.52 50.36 43.59 33.58 72.66 16.8" />
+      <polygon points="0 67.2 29.08 83.98 58.15 67.2 58.15 33.63 29.08 50.41 0 67.2" />
+    </g>
+    <g fill="#121212">
+      <polygon
+        points="92.02 67.2 127.3 67.2 127.3 55.1 105.34 55.1 105.34 47.76 125.86 47.76 125.86 36.24 105.34 36.24 105.34 28.82 127.3 28.82 127.3 16.8 92.02 16.8 92.02 67.2"
+      />
+      <path
+        d="M158.73,30.94c-2.59-1.27-5.64-1.91-9.14-1.91-3.26,0-6.12.58-8.57,1.73-2.45,1.15-4.36,2.69-5.72,4.61-1.37,1.92-2.17,4.01-2.41,6.26h12.02c.82-1.82,2.38-2.74,4.68-2.74,1.34,0,2.47.44,3.38,1.33.91.89,1.37,2.03,1.37,3.42v.65h-7.85c-4.9,0-8.64,1.12-11.23,3.35-2.59,2.23-3.89,5.17-3.89,8.82,0,2.16.54,4.1,1.62,5.83,1.08,1.73,2.65,3.1,4.72,4.1,2.06,1.01,4.49,1.51,7.27,1.51,2.21,0,4.19-.37,5.94-1.12,1.75-.74,3.01-1.57,3.78-2.48h.36l.72,2.88h11.02v-23.54c0-2.78-.7-5.28-2.09-7.49-1.39-2.21-3.38-3.95-5.98-5.22ZM154.34,52.72c0,1.78-.55,3.18-1.66,4.21s-2.62,1.55-4.54,1.55c-1.39,0-2.45-.29-3.17-.86s-1.08-1.37-1.08-2.38.38-1.73,1.15-2.3c.77-.58,1.92-.86,3.46-.86h5.83v.65Z"
+      />
+      <path
+        d="M192.07,43.94l-5.4-.79c-2.35-.33-3.53-1.15-3.53-2.45,0-.72.38-1.34,1.15-1.87.77-.53,1.87-.79,3.31-.79,1.58,0,2.79.3,3.64.9.84.6,1.26,1.38,1.26,2.34h12.1c0-2.06-.65-4.06-1.94-5.98-1.3-1.92-3.23-3.48-5.8-4.68-2.57-1.2-5.65-1.8-9.25-1.8s-6.59.54-9.11,1.62c-2.52,1.08-4.42,2.54-5.69,4.39-1.27,1.85-1.91,3.9-1.91,6.16,0,3.12,1.09,5.66,3.28,7.63,2.18,1.97,5.46,3.29,9.83,3.96l5.26.79c1.34.19,2.28.52,2.81.97.53.46.79,1.09.79,1.91,0,.77-.41,1.4-1.22,1.91s-2.04.76-3.67.76c-1.78,0-3.08-.31-3.92-.94-.84-.62-1.26-1.44-1.26-2.45h-12.17c0,1.97.61,3.91,1.84,5.83,1.22,1.92,3.14,3.53,5.76,4.82,2.62,1.3,5.87,1.94,9.76,1.94s6.83-.54,9.4-1.62c2.57-1.08,4.49-2.54,5.76-4.39,1.27-1.85,1.91-3.88,1.91-6.08,0-6.77-4.32-10.8-12.96-12.1Z"
+      />
+      <path
+        d="M226.64,51.07h-1.44l-7.63-21.31h-13.32l14.83,38.52-.29.65c-.38.82-1.08,1.22-2.09,1.22h-7.63v11.45h10.8c3.12,0,5.5-.61,7.13-1.84,1.63-1.22,2.93-3.18,3.89-5.87l15.77-44.14h-13.32l-6.7,21.31Z"
+      />
+      <path
+        d="M282.18,19.03c-2.62-1.49-5.63-2.23-9.04-2.23h-23.9v50.4h13.32v-14.04h10.58c3.41,0,6.42-.74,9.04-2.23,2.62-1.49,4.64-3.61,6.08-6.37,1.44-2.76,2.16-5.96,2.16-9.61s-.72-6.84-2.16-9.58c-1.44-2.74-3.47-4.85-6.08-6.34ZM275.73,38.86c-.91.98-2.06,1.48-3.46,1.48h-9.72v-10.8h9.72c1.39,0,2.54.5,3.46,1.51.91,1.01,1.37,2.3,1.37,3.89s-.46,2.94-1.37,3.92Z"
+      />
+      <path
+        d="M308.51,30.55c-1.18.53-2.03,1.15-2.56,1.87h-.36l-.72-2.66h-10.94v37.44h12.46v-19.22c0-4.42,2.11-6.62,6.34-6.62h6.48v-11.59h-6.77c-1.44,0-2.75.26-3.92.79Z"
+      />
+      <rect x="321.83" y="14.64" width="12.74" height="10.08" />
+      <rect x="321.97" y="29.76" width="12.46" height="37.44" />
+      <path
+        d="M370.08,30.91c-2.16-1.25-4.66-1.87-7.49-1.87-2.3,0-4.32.37-6.05,1.12-1.73.75-3,1.57-3.82,2.48h-.36l-.72-2.88h-10.94v37.44h12.46v-20.23c0-1.73.52-3.14,1.55-4.25,1.03-1.1,2.41-1.66,4.14-1.66s3.11.55,4.14,1.66c1.03,1.11,1.55,2.52,1.55,4.25v20.23h12.46v-22.9c0-3.07-.61-5.76-1.84-8.06s-2.92-4.08-5.08-5.33Z"
+      />
+      <path
+        d="M406.37,41.35v-11.59h-8.28v-11.45h-12.46v11.45h-5.76v11.59h5.76v14.69c0,3.6,1.01,6.36,3.03,8.28,2.02,1.92,4.97,2.88,8.86,2.88h8.86v-11.38h-5.76c-.91,0-1.56-.19-1.94-.58-.38-.38-.58-1.03-.58-1.94v-11.95h8.28Z"
+      />
+    </g>
+  </svg>
+  </button>
+  <button class="prusaslicer-button" id="prusaslicer-btn" type="button" hidden disabled>
+    <svg class="prusaslicer-button__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" aria-hidden="true" focusable="false">
+      <path d="m 680.14429,102.36264 c -131.72203,-131.722038 -345.22674,-131.722038 -476.94877,0 -131.722035,131.72203 -131.722035,345.22674 0,476.94877 z" fill="#363636" />
+      <path d="m 123.79757,699.53056 c 131.72203,131.72203 345.22674,131.72203 476.94877,0 131.72204,-131.72204 131.72204,-345.22674 0,-476.94877" fill="#ed6b21" />
+    </svg>
+    <span class="prusaslicer-button__label">Open in <strong>PrusaSlicer</strong></span>
+  </button>
+  <p class="export-status" id="export-status" role="status" aria-live="polite"></p>
+
   <div class="secondary">
     <button type="button" id="share">Copy link</button>
     <button type="button" id="reset">Reset</button>
@@ -167,6 +251,8 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { toCreasedNormals } from "three/addons/utils/BufferGeometryUtils.js";
 import Module from "https://cdn.jsdelivr.net/npm/manifold-3d@3.5.4/manifold.js";
 import { buildBin, buildBaseplate, meshToSTL, GRID } from "./gridfinity.js";
+import { meshTo3MF } from "./threemf.js";
+import { uploadToSlicer, canOpenInPrusaslicer, openPendingTab, launchPrusaslicer } from "./slicer.js";
 
 const $ = id => document.getElementById(id);
 const form = $("form");
@@ -332,17 +418,68 @@ function rebuild() {
     const tris = current.mesh.triVerts.length / 3;
     $("stats").hidden = false;
     $("stats").innerHTML = `<b>${w.toFixed(1)} × ${d.toFixed(1)} × ${h.toFixed(1)} mm</b> · ${tris.toLocaleString("en")} triangles · ${ms.toFixed(0)} ms`;
-    $("download").disabled = false;
+    for (const id of ["download", "download3mf", "easyprint-btn", "prusaslicer-btn"]) if (!busy) $(id).disabled = false;
   }, 60);
 }
 
-function filename() {
+function filename(ext = "stl") {
   if (type === "bin") {
     const p = read("b_");
-    return `gridfinity_bin_${p.gx}x${p.gy}x${p.gz}${p.divX || p.divY ? `_${p.divX + 1}x${p.divY + 1}comp` : ""}${p.magnets ? "_magnets" : ""}.stl`;
+    return `gridfinity_bin_${p.gx}x${p.gy}x${p.gz}${p.divX || p.divY ? `_${p.divX + 1}x${p.divY + 1}comp` : ""}${p.magnets ? "_magnets" : ""}.${ext}`;
   }
   const p = read("p_");
-  return `gridfinity_baseplate_${p.gx}x${p.gy}_${p.style}.stl`;
+  return `gridfinity_baseplate_${p.gx}x${p.gy}_${p.style}.${ext}`;
+}
+function modelTitle() {
+  if (type === "bin") { const p = read("b_"); return `Gridfinity bin ${p.gx}x${p.gy}x${p.gz}`; }
+  const p = read("p_"); return `Gridfinity baseplate ${p.gx}x${p.gy}`;
+}
+function saveBlob(blob, name) {
+  const url = URL.createObjectURL(blob);
+  const a = Object.assign(document.createElement("a"), { href: url, download: name });
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+// ---------- EasyPrint / PrusaSlicer ----------
+let busy = false;
+function setStatus(html, isError = false) {
+  const el = $("export-status");
+  el.innerHTML = html;
+  el.classList.toggle("error", isError);
+}
+async function sendToSlicer(target) {
+  if (!current || busy) return;
+  // Open the EasyPrint tab now, while the click still counts as a user action.
+  const tab = target === "easyprint" ? openPendingTab("Uploading your Gridfinity model to EasyPrint…") : null;
+  const btns = ["easyprint-btn", "prusaslicer-btn"].map($);
+  busy = true;
+  btns.forEach(b => b.disabled = true);
+  setStatus(target === "easyprint" ? "Uploading to EasyPrint…" : "Uploading for PrusaSlicer…");
+  try {
+    const blob = await meshTo3MF(current.mesh, modelTitle());
+    const res = await uploadToSlicer(blob, filename("3mf"), { name: "Gridfinity Customizer", url: location.href });
+    if (target === "easyprint") {
+      if (tab && !tab.closed) {
+        tab.location.replace(res.easyprint_url);
+        setStatus("Opened in EasyPrint in a new tab.");
+      } else if (window.open(res.easyprint_url, "_blank", "noopener")) {
+        setStatus("Opened in EasyPrint in a new tab.");
+      } else {
+        setStatus(`Your browser blocked the new tab. <a href="${res.easyprint_url}" target="_blank" rel="noopener">Open EasyPrint</a>`);
+      }
+    } else {
+      launchPrusaslicer(res.prusaslicer_url);
+      setStatus("Opening PrusaSlicer… If nothing happens, install <a href=\"https://www.prusa3d.com/prusaslicer/\" target=\"_blank\" rel=\"noopener\">PrusaSlicer</a> first.");
+    }
+  } catch (err) {
+    console.error(err);
+    if (tab && !tab.closed) tab.close();
+    setStatus(err.message || "Upload failed. Please try again.", true);
+  } finally {
+    busy = false;
+    btns.forEach(b => b.disabled = false);
+  }
 }
 
 // ---------- events ----------
@@ -350,12 +487,14 @@ form.addEventListener("input", rebuild);
 form.addEventListener("change", rebuild);
 document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => { type = b.dataset.type; rebuild(); }));
 $("download").addEventListener("click", () => {
-  if (!current) return;
-  const url = URL.createObjectURL(new Blob([meshToSTL(current.mesh)], { type: "model/stl" }));
-  const a = Object.assign(document.createElement("a"), { href: url, download: filename() });
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  if (current) saveBlob(new Blob([meshToSTL(current.mesh)], { type: "model/stl" }), filename("stl"));
 });
+$("download3mf").addEventListener("click", async () => {
+  if (current) saveBlob(await meshTo3MF(current.mesh, modelTitle()), filename("3mf"));
+});
+$("easyprint-btn").addEventListener("click", () => sendToSlicer("easyprint"));
+$("prusaslicer-btn").addEventListener("click", () => sendToSlicer("prusaslicer"));
+$("prusaslicer-btn").hidden = !canOpenInPrusaslicer();
 $("reset").addEventListener("click", () => {
   const prefix = type === "bin" ? "b_" : "p_";
   for (const el of inputs) if (el.id.startsWith(prefix)) {

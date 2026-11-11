@@ -17,11 +17,18 @@ Parametric [Gridfinity](https://gridfinity.xyz/) modelling in the browser. Confi
 - Any size in grid units
 - Open frame, solid bottom, or magnet holes
 
+**Export**
+- Download STL or 3MF
+- **Print with EasyPrint**: uploads a 3MF to Prusa EasyPrint and opens it in a new tab
+- **Open in PrusaSlicer** (desktop only): opens the same upload in the PrusaSlicer app
+
 Settings are kept in the URL, so you can share or bookmark a configuration with **Copy link**.
 
 ## How it works
 
 - `gridfinity.js` builds the geometry with [Manifold](https://github.com/elalish/manifold) (WASM CSG) and writes binary STL.
+- `threemf.js` writes 3MF packages without any library.
+- `slicer.js` uploads the model to the [EasyPrint import API](https://slicer.printables.com/developers/import). Uploads are anonymous and the links expire after 30 minutes. The link back to the exact configuration is sent as attribution.
 - `index.html` contains the UI and the three.js preview.
 - It is a static site: no build step. GitHub Pages serves it from `main`.
 
